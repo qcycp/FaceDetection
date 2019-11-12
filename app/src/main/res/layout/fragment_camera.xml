@@ -30,4 +30,12 @@
         android:layout_alignRight="@+id/textureView"
         android:layout_alignBottom="@+id/textureView" />
 
+    <TextView
+        android:id="@+id/liveness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textSize="30sp"
+        android:textColor="#FF0000"/>
+
 </RelativeLayout>

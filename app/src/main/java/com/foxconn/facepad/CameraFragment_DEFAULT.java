@@ -35,6 +35,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.opencv.android.Utils;
@@ -160,6 +161,8 @@ public class CameraFragment_DEFAULT extends Fragment {
      * The {@link android.util.Size} of camera preview.
      */
     private Size mPreviewSize;
+
+    private TextView mLiveness;
 
     /**
      * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state.
@@ -304,6 +307,7 @@ public class CameraFragment_DEFAULT extends Fragment {
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.textureView);
         mBoundingBoxView = (BoundingBoxView) view.findViewById(R.id.boundingBoxView);
         mBoundingBoxView_DNN = (BoundingBoxView_DNN) view.findViewById(R.id.boundingBoxView_DNN);
+        mLiveness = (TextView) view.findViewById(R.id.liveness);
     }
 
     @Override
@@ -606,6 +610,8 @@ public class CameraFragment_DEFAULT extends Fragment {
     }
 
     private class detectAsync_haar_default extends AsyncTask<Bitmap, Void, MatOfRect> {
+        Bitmap source = null;
+
         @Override
         protected void onPreExecute() {
             mIsDetecting = true;
@@ -613,6 +619,7 @@ public class CameraFragment_DEFAULT extends Fragment {
         }
 
         protected MatOfRect doInBackground(Bitmap... bp) {
+            this.source = bp[0];
 
             Log.d(TAG, "byte to bitmap");
 
@@ -645,6 +652,37 @@ public class CameraFragment_DEFAULT extends Fragment {
         protected void onPostExecute(MatOfRect results) {
             mBoundingBoxView.setResults(results);
             mIsDetecting = false;
+
+            long startTime = System.currentTimeMillis();
+            org.opencv.core.Rect[] facesArray = results.toArray();
+            Log.d(TAG, "Image Width: " + this.source.getWidth() + ", Image Height: " + this.source.getHeight());
+            for (int i = 0; i < facesArray.length; i++) {
+                int x1 = (int)facesArray[i].tl().x;
+                int x2 = (int)facesArray[i].br().x;
+                int y1 = (int)facesArray[i].tl().y;
+                int y2 = (int)facesArray[i].br().y;
+                x1 = x1 < 0 ? 0 : x1;
+                y1 = y1 < 0 ? 0 : y1;
+                x2 = x2 > this.source.getWidth()-1 ? this.source.getWidth()-1 : x2;
+                y2 = y2 > this.source.getHeight()-1 ? this.source.getHeight()-1 : y2;
+                try {
+                    Bitmap crop_bmp = Bitmap.createBitmap(
+                            this.source,
+                            x1, y1, x2-x1, y2-y1,
+                            null,
+                            false);
+
+                    Log.d(TAG, "x: " + x1 + ", y: " + y1 + ", w: " + (x2-x1) + ", h: " + (y2-y1));
+                    String pred = MainActivity_ALT.classifier.predict(crop_bmp);
+                    mLiveness.setText(pred);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "==========================================");
+                }
+            }
+
+            long endTime = System.currentTimeMillis();
+            Log.d(TAG, "Liveness Time cost: " + String.valueOf((endTime - startTime) / 1000f) + " sec");
         }
     }
 }

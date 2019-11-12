@@ -18,6 +18,7 @@ import java.io.InputStream;
 public class MainActivity_ALT extends AppCompatActivity {
     private final static String TAG = MainActivity_ALT.class.getCanonicalName();
     private static final int REQUEST_PERMISSION = 1;
+    static Classifier classifier;
 
     static {
         System.loadLibrary("opencv_java4");
@@ -28,6 +29,8 @@ public class MainActivity_ALT extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_alt);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        classifier = new Classifier(Utils.assetFilePath(this,"resnet_18-local.pt"));
 
         loadCascadeFile(R.raw.haarcascade_frontalface_alt, "haarcascade_frontalface_alt.xml");
         loadCascadeFile(R.raw.haarcascade_frontalface_default, "haarcascade_frontalface_default.xml");

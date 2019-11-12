@@ -5,12 +5,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import org.opencv.core.Mat;
 
@@ -22,6 +25,8 @@ public class BoundingBoxView_DNN extends SurfaceView implements SurfaceHolder.Ca
 
     private boolean mIsCreated;
     final double THRESHOLD = 0.7;
+    private int screen_width;
+    private int screen_height;
 
     public BoundingBoxView_DNN(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -67,10 +72,10 @@ public class BoundingBoxView_DNN extends SurfaceView implements SurfaceHolder.Ca
             double confidence = detections.get(i, 2)[0];
             if (confidence > THRESHOLD) {
                 int classId = (int)detections.get(i, 1)[0];
-                int left   = (int)(detections.get(i, 3)[0] * 1200);
-                int top    = (int)(detections.get(i, 4)[0] * 1600);
-                int right  = (int)(detections.get(i, 5)[0] * 1200);
-                int bottom = (int)(detections.get(i, 6)[0] * 1600);
+                int left   = (int)(detections.get(i, 3)[0] * 1080);
+                int top    = (int)(detections.get(i, 4)[0] * 1440);
+                int right  = (int)(detections.get(i, 5)[0] * 1080);
+                int bottom = (int)(detections.get(i, 6)[0] * 1440);
                 // Draw rectangle around detected object.
                 Rect rect = new Rect((int)left, (int)top, (int)right, (int)bottom);
                 canvas.drawRect(rect, mPaint);
