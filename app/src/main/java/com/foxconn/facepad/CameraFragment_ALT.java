@@ -655,7 +655,6 @@ public class CameraFragment_ALT extends Fragment {
             mBoundingBoxView.setResults(results);
             mIsDetecting = false;
 
-            long startTime = System.currentTimeMillis();
             org.opencv.core.Rect[] facesArray = results.toArray();
             Log.d(TAG, "Image Width: " + this.source.getWidth() + ", Image Height: " + this.source.getHeight());
             for (int i = 0; i < facesArray.length; i++) {
@@ -674,17 +673,15 @@ public class CameraFragment_ALT extends Fragment {
                             null,
                             false);
 
-                    Log.d(TAG, "x: " + x1 + ", y: " + y1 + ", w: " + (x2-x1) + ", h: " + (y2-y1));
+                    long startTime = System.currentTimeMillis();
                     String pred = MainActivity_ALT.classifier.predict(crop_bmp);
-                    mLiveness.setText(pred);
+                    long endTime = System.currentTimeMillis();
+                    mLiveness.setText(pred + " (" + String.valueOf(endTime - startTime) + "ms)");
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.d(TAG, "==========================================");
                 }
             }
-
-            long endTime = System.currentTimeMillis();
-            Log.d(TAG, "Liveness Time cost: " + String.valueOf((endTime - startTime) / 1000f) + " sec");
         }
     }
 }
