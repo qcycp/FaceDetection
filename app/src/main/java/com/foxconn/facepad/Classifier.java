@@ -57,15 +57,21 @@ public class Classifier {
 
     public String predict(Bitmap bitmap){
 
-        Tensor tensor = preprocess(bitmap,96, 112);
+        Tensor tensor = preprocess(bitmap,64, 64);
 
         IValue inputs = IValue.from(tensor);
         Tensor outputs = model.forward(inputs).toTensor();
 
         float[] scores = outputs.getDataAsFloatArray();
 
-        int classIndex = argMax(scores);
+        //int classIndex = argMax(scores);
         float fmp = fmp_predict(scores);
+        int classIndex = 0;
+        if (fmp > 0.96) {
+            classIndex = 0;
+        } else {
+            classIndex = 1;
+        }
         String fmp_string = String.format("  非活體機率 %.3f", fmp);
         return Constants.IMAGENET_CLASSES[classIndex] + fmp_string;
     }

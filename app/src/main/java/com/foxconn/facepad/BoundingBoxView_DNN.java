@@ -72,8 +72,8 @@ public class BoundingBoxView_DNN extends SurfaceView implements SurfaceHolder.Ca
             double confidence = detections.get(i, 2)[0];
             if (confidence > THRESHOLD) {
                 int classId = (int)detections.get(i, 1)[0];
-                int left   = (int)(detections.get(i, 3)[0] * 1080);
-                int top    = (int)(detections.get(i, 4)[0] * 1440);
+                int left   = (int)(detections.get(i, 3)[0] * 1080);//1330
+                int top    = (int)(detections.get(i, 4)[0] * 1440);//1774
                 int right  = (int)(detections.get(i, 5)[0] * 1080);
                 int bottom = (int)(detections.get(i, 6)[0] * 1440);
                 // Draw rectangle around detected object.

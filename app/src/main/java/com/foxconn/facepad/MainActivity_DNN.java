@@ -30,7 +30,8 @@ public class MainActivity_DNN extends AppCompatActivity {
         setContentView(R.layout.activity_main_dnn);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        classifier = new Classifier(Utils.assetFilePath(this,"resnet_18-local.pt"));
+        //classifier = new Classifier(Utils.assetFilePath(this,"resnet_18-local.pt"));
+        classifier = new Classifier(Utils.assetFilePath(this,"cnn-local.pt"));
 
         loadCascadeFile(R.raw.haarcascade_frontalface_alt, "haarcascade_frontalface_alt.xml");
         loadCascadeFile(R.raw.haarcascade_frontalface_default, "haarcascade_frontalface_default.xml");
