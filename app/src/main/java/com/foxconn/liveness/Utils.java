@@ -1,4 +1,4 @@
-package com.foxconn.facepad;
+package com.foxconn.liveness;
 
 import android.content.Context;
 import android.util.Log;

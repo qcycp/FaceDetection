@@ -1,10 +1,9 @@
-package com.foxconn.facepad;
+package com.foxconn.liveness;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
@@ -19,7 +18,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,17 +38,11 @@ import android.widget.Toast;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Scalar;
 import org.opencv.dnn.Dnn;
 import org.opencv.dnn.Net;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,8 +50,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
-import org.opencv.core.Rect;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -640,12 +630,12 @@ public class CameraFragment_DNN extends Fragment {
             Imgproc.cvtColor(src, dst, Imgproc.COLOR_BGRA2BGR);
             //Imgproc.cvtColor(temp, dst, Imgproc.COLOR_BGR2GRAY);
 
-            //String proto = "/data/user/0/com.foxconn.facepad/app_cascade/MobileNetSSD_proto.prototxt";
-            //String weight = "/data/user/0/com.foxconn.facepad/app_cascade/MobileNetSSD_weight.caffemodel";
+            //String proto = "/data/user/0/com.foxconn.liveness/app_cascade/MobileNetSSD_proto.prototxt";
+            //String weight = "/data/user/0/com.foxconn.liveness/app_cascade/MobileNetSSD_weight.caffemodel";
             //Net net = Dnn.readNetFromCaffe(proto, weight);
 
-            String model = "/data/user/0/com.foxconn.facepad/app_cascade/opencv_face_detector_uint8.pb";
-            String config = "/data/user/0/com.foxconn.facepad/app_cascade/opencv_face_detector.pbtxt";
+            String model = "/data/user/0/com.foxconn.liveness/app_cascade/opencv_face_detector_uint8.pb";
+            String config = "/data/user/0/com.foxconn.liveness/app_cascade/opencv_face_detector.pbtxt";
             Net net = Dnn.readNetFromTensorflow(model, config);
 
             Mat blob = Dnn.blobFromImage(dst, IN_SCALE_FACTOR,

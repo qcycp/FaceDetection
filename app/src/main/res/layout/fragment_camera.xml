@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".CameraFragment">
 
-    <com.foxconn.facepad.AutoFitTextureView
+    <com.foxconn.liveness.AutoFitTextureView
         android:id="@+id/textureView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <com.foxconn.facepad.BoundingBoxView
+    <com.foxconn.liveness.BoundingBoxView
         android:id="@+id/boundingBoxView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:layout_alignRight="@+id/textureView"
         android:layout_alignBottom="@+id/textureView" />
 
-    <com.foxconn.facepad.BoundingBoxView_DNN
+    <com.foxconn.liveness.BoundingBoxView_DNN
         android:id="@+id/boundingBoxView_DNN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

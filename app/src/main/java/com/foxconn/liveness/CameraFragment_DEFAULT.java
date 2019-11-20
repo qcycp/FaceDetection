@@ -1,10 +1,9 @@
-package com.foxconn.facepad;
+package com.foxconn.liveness;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
@@ -19,7 +18,6 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,16 +39,10 @@ import android.widget.Toast;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
-import org.opencv.core.Scalar;
-import org.opencv.dnn.Dnn;
-import org.opencv.dnn.Net;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,8 +50,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
-import org.opencv.core.Rect;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -633,7 +623,7 @@ public class CameraFragment_DEFAULT extends Fragment {
             Imgproc.cvtColor(src, temp, Imgproc.COLOR_BGRA2BGR);
             Imgproc.cvtColor(temp, dst, Imgproc.COLOR_BGR2GRAY);
 
-            File mFaceCascadeFile = new File("/data/user/0/com.foxconn.facepad/app_cascade/haarcascade_frontalface_default.xml");
+            File mFaceCascadeFile = new File("/data/user/0/com.foxconn.liveness/app_cascade/haarcascade_frontalface_default.xml");
             CascadeClassifier mJavaDetector = new CascadeClassifier(mFaceCascadeFile.getAbsolutePath());
             if (mJavaDetector.empty()) {
                 Log.e(TAG, "Failed to load cascade classifier");

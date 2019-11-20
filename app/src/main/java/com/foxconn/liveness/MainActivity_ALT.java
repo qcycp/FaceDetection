@@ -1,4 +1,4 @@
-package com.foxconn.facepad;
+package com.foxconn.liveness;
 
 import android.Manifest;
 import android.content.Context;
@@ -15,8 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MainActivity_DNN extends AppCompatActivity {
-    private final static String TAG = MainActivity_DNN.class.getCanonicalName();
+public class MainActivity_ALT extends AppCompatActivity {
+    private final static String TAG = MainActivity_ALT.class.getCanonicalName();
     private static final int REQUEST_PERMISSION = 1;
     static Classifier classifier;
 
@@ -27,10 +27,9 @@ public class MainActivity_DNN extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_dnn);
+        setContentView(R.layout.activity_main_alt);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //classifier = new Classifier(Utils.assetFilePath(this,"resnet_18-local.pt"));
         classifier = new Classifier(Utils.assetFilePath(this,"cnn-local.pt"));
 
         loadCascadeFile(R.raw.haarcascade_frontalface_alt, "haarcascade_frontalface_alt.xml");
@@ -73,7 +72,7 @@ public class MainActivity_DNN extends AppCompatActivity {
     private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                Toast.makeText(MainActivity_DNN.this, "Camera permission are required for this demo", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity_ALT.this, "Camera permission are required for this demo", Toast.LENGTH_LONG).show();
             }
             requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION);
         }
@@ -102,7 +101,7 @@ public class MainActivity_DNN extends AppCompatActivity {
     private void setFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, CameraFragment_DNN.newInstance())
+                .replace(R.id.container, CameraFragment_ALT.newInstance())
                 .commitNowAllowingStateLoss();
     }
 }

@@ -4,7 +4,7 @@
 extern "C" JNIEXPORT jstring
 
 JNICALL
-Java_com_foxconn_facepad_FDdemoActivity_stringFromJNI(
+Java_com_foxconn_liveness_FDdemoActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
     std::string hello = "HAHAHA";

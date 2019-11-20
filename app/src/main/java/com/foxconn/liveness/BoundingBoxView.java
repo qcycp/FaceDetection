@@ -1,34 +1,28 @@
-package com.foxconn.facepad;
+package com.foxconn.liveness;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.WindowManager;
 
-import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
 
-public class BoundingBoxView_DNN extends SurfaceView implements SurfaceHolder.Callback {
+public class BoundingBoxView extends SurfaceView implements SurfaceHolder.Callback {
     private final static String TAG = BoundingBoxView.class.getCanonicalName();
     protected SurfaceHolder mSurfaceHolder;
 
     private Paint mPaint;
 
     private boolean mIsCreated;
-    final double THRESHOLD = 0.7;
-    private int screen_width;
-    private int screen_height;
 
-    public BoundingBoxView_DNN(Context context, AttributeSet attrs) {
+    public BoundingBoxView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mSurfaceHolder = getHolder();
@@ -57,7 +51,7 @@ public class BoundingBoxView_DNN extends SurfaceView implements SurfaceHolder.Ca
         mIsCreated = false;
     }
 
-    public void setResults(Mat detections) {
+    public void setResults(MatOfRect detRets) {
         if (!mIsCreated) {
             return;
         }
@@ -68,18 +62,11 @@ public class BoundingBoxView_DNN extends SurfaceView implements SurfaceHolder.Ca
 
         canvas.drawColor(Color.TRANSPARENT);
 
-        for (int i = 0; i < detections.rows(); ++i) {
-            double confidence = detections.get(i, 2)[0];
-            if (confidence > THRESHOLD) {
-                int classId = (int)detections.get(i, 1)[0];
-                int left   = (int)(detections.get(i, 3)[0] * 1080);//1330
-                int top    = (int)(detections.get(i, 4)[0] * 1440);//1774
-                int right  = (int)(detections.get(i, 5)[0] * 1080);
-                int bottom = (int)(detections.get(i, 6)[0] * 1440);
-                // Draw rectangle around detected object.
-                Rect rect = new Rect((int)left, (int)top, (int)right, (int)bottom);
-                canvas.drawRect(rect, mPaint);
-            }
+        org.opencv.core.Rect[] facesArray = detRets.toArray();
+        Log.d(TAG, "face number: " + facesArray.length);
+        for (int i = 0; i < facesArray.length; i++) {
+            Rect rect = new Rect((int)facesArray[i].tl().x, (int)facesArray[i].tl().y, (int)facesArray[i].br().x, (int)facesArray[i].br().y);
+            canvas.drawRect(rect, mPaint);
         }
 
         mSurfaceHolder.unlockCanvasAndPost(canvas);

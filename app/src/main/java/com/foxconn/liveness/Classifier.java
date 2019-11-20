@@ -1,4 +1,4 @@
-package com.foxconn.facepad;
+package com.foxconn.liveness;
 
 import android.graphics.Bitmap;
 import android.util.Log;
